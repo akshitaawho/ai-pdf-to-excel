@@ -1,3 +1,5 @@
+
+
 import os
 
 from fastapi import FastAPI, Request, UploadFile, File
@@ -41,31 +43,40 @@ async def upload_pdf(
 
     file_path = f"uploads/{pdf_file.filename}"
 
+    # saves the uploaded file
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(pdf_file.file, buffer)
 
+    # extracts the text from the PDF
     extracted_text = extract_text_from_pdf(
         file_path
     )
-
+    # sends the text to AI
     parsed_data = extract_structured_data(
         extracted_text
     )
 
-    invoice_number = parsed_data.get("invoice_number")
+    document_type = parsed_data.get(
+        "document_type",
+        "document"
+    )
 
-    if not invoice_number:
-        invoice_number = "invoice"
+    document_type = document_type.replace(
+        " ",
+        "_"
+    )
 
-    excel_path = f"outputs/{invoice_number}.xlsx"
+    excel_path = f"outputs/{document_type}.xlsx"
 
+    # generates excel sheet
     generate_excel(
         parsed_data,
         excel_path
     )
 
+    # returns the excel sheet
     return FileResponse(
         excel_path,
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        filename=f"{invoice_number}.xlsx"
+        filename=f"{document_type}.xlsx"
     )

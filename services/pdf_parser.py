@@ -1,6 +1,6 @@
 import pdfplumber
 
-
+# loads the pdf into memory, kind of translates it for the AI to understand
 def extract_text_from_pdf(pdf_path):
     text = ""
 

@@ -1,34 +1,50 @@
 # AI PDF To Excel Converter
 
-A web application that converts PDF invoices into structured Excel files.
+Convert PDF documents into structured Excel files using AI.
 
 ## Features
 
-* Upload PDF invoices
-* Extract text from PDFs
-* Parse invoice information
-* Generate Excel files automatically
-* Download Excel output
+- Upload PDF files
+- Extract text from documents
+- AI-powered information extraction using Groq LLM
+- Generate structured Excel files
+- Download processed Excel instantly
 
-## Technology Stack
+## Tech Stack
 
-* FastAPI
-* Python
-* pdfplumber
-* pandas
-* openpyxl
+- FastAPI
+- Python
+- Groq API
+- Pandas
+- OpenPyXL
+- Render
+- GitHub
 
-## Run Locally
+## Live Demo
+
+https://YOUR-RENDER-URL.onrender.com
+
+## Project Workflow
+
+PDF Upload
+↓
+Text Extraction
+↓
+AI Processing
+↓
+Structured JSON
+↓
+Excel Generation
+↓
+Download Excel
+
+## Installation
 
 ```bash
 pip install -r requirements.txt
 uvicorn app:app --reload
 ```
 
-Open:
+## Author
 
-http://127.0.0.1:8000
-
-## Workflow
-
-PDF → Text Extraction → Data Parsing → Excel Generation → Download
+Akshitaa Sahoo

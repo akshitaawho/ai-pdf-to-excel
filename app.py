@@ -6,8 +6,8 @@ from services.pdf_parser import extract_text_from_pdf
 
 from fastapi.responses import FileResponse
 
-from services.invoice_parser import parse_invoice
 from services.excel_generator import generate_excel
+from services.ai_extractor import extract_structured_data
 
 import shutil
 
@@ -41,14 +41,14 @@ async def upload_pdf(
         file_path
     )
 
-    parsed_data = parse_invoice(
+    parsed_data = extract_structured_data(
         extracted_text
     )
 
-    invoice_number = parsed_data.get(
-        "invoice_number",
-        "invoice"
-    )
+    invoice_number = parsed_data.get("invoice_number")
+
+    if not invoice_number:
+        invoice_number = "invoice"
 
     excel_path = f"outputs/{invoice_number}.xlsx"
 

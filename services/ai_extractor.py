@@ -12,18 +12,39 @@ client = Groq(
 
 
 def extract_structured_data(text):
-
     prompt = f"""
-You are a document extraction engine.
+    You are an expert document extraction engine.
 
-Extract all important information.
+    Extract the following fields if present:
 
-Return ONLY valid JSON.
+    - invoice_number
+    - customer
+    - date
+    - total_amount
+    - items
 
-Document:
+    Return ONLY valid JSON.
 
-{text}
-"""
+    Example:
+
+    {{
+    "invoice_number": "INV-1001",
+    "customer": "ABC Corporation",
+    "date": "2025-06-16",
+    "total_amount": 1020,
+    "items": [
+        {{
+        "name": "Laptop",
+        "quantity": 2,
+        "unit_price": 500
+        }}
+    ]
+    }}
+
+    Document:
+
+    {text}
+    """
 
     response = client.chat.completions.create(
         model="llama-3.3-70b-versatile",
@@ -38,4 +59,8 @@ Document:
 
     result = response.choices[0].message.content
 
-    return result
+    result = result.replace("```json", "")
+    result = result.replace("```", "")
+    result = result.strip()
+
+    return json.loads(result)

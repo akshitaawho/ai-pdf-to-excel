@@ -1,25 +1,43 @@
 import re
 
 
+import re
+
+
 def parse_invoice(text):
 
-    invoice_number = re.search(
-        r"Invoice Number:\s*(.*)",
+    invoice_number = ""
+
+    invoice_match = re.search(
+        r"INV-[0-9]{4}-[0-9]+",
         text
     )
 
-    customer = re.search(
-        r"Customer:\s*(.*)",
+    if invoice_match:
+        invoice_number = invoice_match.group(0)
+
+    customer = ""
+
+    customer_match = re.search(
+        r"([A-Z][A-Za-z\s]+Corporation)",
         text
     )
 
-    date = re.search(
-        r"Date:\s*(.*)",
+    if customer_match:
+        customer = customer_match.group(1)
+
+    date = ""
+
+    date_match = re.search(
+        r"(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},\s+\d{4}",
         text
     )
+
+    if date_match:
+        date = date_match.group(0)
 
     return {
-        "invoice_number": invoice_number.group(1) if invoice_number else "",
-        "customer": customer.group(1) if customer else "",
-        "date": date.group(1) if date else ""
+        "invoice_number": invoice_number,
+        "customer": customer,
+        "date": date
     }

@@ -9,9 +9,16 @@ from fastapi.responses import FileResponse
 from services.excel_generator import generate_excel
 from services.ai_extractor import extract_structured_data
 
+from fastapi.staticfiles import StaticFiles
+
 import shutil
 
 app = FastAPI()
+app.mount(
+    "/static",
+    StaticFiles(directory="static"),
+    name="static"
+)
 
 os.makedirs("uploads", exist_ok=True)
 os.makedirs("outputs", exist_ok=True)

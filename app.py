@@ -41,7 +41,12 @@ async def upload_pdf(
         extracted_text
     )
 
-    excel_path = "outputs/invoice.xlsx"
+    invoice_number = parsed_data.get(
+        "invoice_number",
+        "invoice"
+    )
+
+    excel_path = f"outputs/{invoice_number}.xlsx"
 
     generate_excel(
         parsed_data,
@@ -51,5 +56,5 @@ async def upload_pdf(
     return FileResponse(
         excel_path,
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        filename="invoice.xlsx"
+        filename=f"{invoice_number}.xlsx"
     )

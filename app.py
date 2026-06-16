@@ -1,7 +1,8 @@
+import os
+
 from fastapi import FastAPI, Request, UploadFile, File
 from fastapi.templating import Jinja2Templates
 from services.pdf_parser import extract_text_from_pdf
-from services.ai_extractor import extract_structured_data
 
 from fastapi.responses import FileResponse
 
@@ -11,6 +12,9 @@ from services.excel_generator import generate_excel
 import shutil
 
 app = FastAPI()
+
+os.makedirs("uploads", exist_ok=True)
+os.makedirs("outputs", exist_ok=True)
 
 templates = Jinja2Templates(directory="templates")
 

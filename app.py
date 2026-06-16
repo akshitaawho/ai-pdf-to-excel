@@ -2,6 +2,12 @@ from fastapi import FastAPI, Request, UploadFile, File
 from fastapi.templating import Jinja2Templates
 from services.pdf_parser import extract_text_from_pdf
 from services.ai_extractor import extract_structured_data
+
+from fastapi.responses import FileResponse
+
+from services.invoice_parser import parse_invoice
+from services.excel_generator import generate_excel
+
 import shutil
 
 app = FastAPI()
@@ -27,13 +33,28 @@ async def upload_pdf(
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(pdf_file.file, buffer)
 
-    extracted_text = extract_text_from_pdf(file_path)
+    extracted_text = extract_text_from_pdf(
+        file_path
+    )
 
-    structured_data = extract_structured_data(
+    parsed_data = parse_invoice(
         extracted_text
     )
 
-    return {
-        "filename": pdf_file.filename,
-        "structured_data": structured_data
-    }
+    invoice_number = parsed_data.get(
+        "invoice_number",
+        "invoice"
+    )
+
+    excel_path = f"outputs/{invoice_number}.xlsx"
+
+    generate_excel(
+        parsed_data,
+        excel_path
+    )
+
+    return FileResponse(
+        excel_path,
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        filename=f"{invoice_number}.xlsx"
+    )

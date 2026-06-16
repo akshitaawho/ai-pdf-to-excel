@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI PDF To Excel</title>
+    <style>
+        body{
+            font-family: Arial;
+            max-width:800px;
+            margin:auto;
+            padding:40px;
+        }
+
+        .box{
+            border:1px solid #ccc;
+            padding:30px;
+            border-radius:10px;
+        }
+
+        button{
+            padding:10px 20px;
+            cursor:pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>AI PDF To Excel Converter</h1>
+
+<div class="box">
+
+<form action="/upload" method="post" enctype="multipart/form-data">
+
+<input type="file" name="pdf_file" accept=".pdf" required>
+
+<br><br>
+
+<button type="submit">
+Convert PDF
+</button>
+
+</form>
+
+</div>
+
+</body>
+</html>
